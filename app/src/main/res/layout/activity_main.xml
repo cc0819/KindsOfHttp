@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.kindofhttp.cc.MainActivity">
+
+    <Button
+        android:id="@+id/okhttp_get"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="okhttp GET" />
+
+    <Button
+        android:id="@+id/okhttp_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="okhttp POST" />
+
+
+    <Button
+        android:id="@+id/retrofit_get"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="retrofit GET" />
+
+    <Button
+        android:id="@+id/retrofit_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="retrofit POST" />
+
+
+    <TextView
+        android:id="@+id/show_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp" />
+
+
+</LinearLayout>
