@@ -2,7 +2,7 @@ package com.kindofhttp.cc;
 
 import android.app.Application;
 
-import com.zhy.http.okhttp.OkHttpUtils;
+import com.kindofhttp.cc.okhttputlis.OkHttpUtils;
 
 import java.util.concurrent.TimeUnit;
 

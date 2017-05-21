@@ -4,7 +4,7 @@ package com.kindofhttp.cc.entity;
  * Created by cc on 17/5/20.
  */
 
-public class MovieEmtity {
+public class MovieEntity {
 
     private int start;
     private int count;
