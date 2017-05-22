@@ -10,6 +10,9 @@ import com.kindofhttp.cc.entity.MovieEntity;
 import com.kindofhttp.cc.entity.WeekDayEntiy;
 import com.kindofhttp.cc.okhttputlis.OkHttpUtils;
 import com.kindofhttp.cc.okhttputlis.callback.StringCallback;
+import com.kindofhttp.cc.retrofitutlis.RetrofitUtil;
+import com.kindofhttp.cc.retrofitutlis.base.BaseEntity;
+import com.kindofhttp.cc.retrofitutlis.base.BaseSubscriber;
 import com.kindofhttp.cc.utlis.CustomInterceptor;
 import com.kindofhttp.cc.utlis.RequestInterceptor;
 
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.okhttp_get, R.id.okhttp_post, R.id.retrofit_get, R.id.retrofit_post,R.id.retrofitRX_get,R.id.retrofitRX_post})
+    @OnClick({R.id.okhttp_get, R.id.okhttp_post, R.id.retrofit_get, R.id.retrofit_post,R.id.retrofitRX_get,R.id.retrofitRX_post,R.id.retrofitUtils})
     public void onClickViews(View view) {
         switch (view.getId()) {
             case R.id.okhttp_get:
@@ -79,12 +82,16 @@ public class MainActivity extends AppCompatActivity {
             case R.id.retrofitRX_post:
                 retrofitRxPostLoad();
                 break;
+            case R.id.retrofitUtils:
+                retrofitRxUtilsGET();
+                break;
             default:
                 break;
         }
 
 
     }
+
 
     private void okHttpGetLoad() {
         String url = "http://www.json.cn/";
@@ -292,6 +299,24 @@ public class MainActivity extends AppCompatActivity {
                 });
 
     }
+
+
+    private void retrofitRxUtilsGET() {
+        RetrofitUtil.getInstance().getUsers(0,10, new BaseSubscriber<MovieEntity>(this) {
+            @Override
+            protected void onSuccees(BaseEntity<MovieEntity> t) throws Exception {
+                Log.e("retrofit","请求成功了--"+t.getTitle());
+//                showText.setText();
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                Log.e("retrofit","请求失败了"+e.toString());
+            }
+        });
+
+    }
+
 
 
 

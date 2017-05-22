@@ -38,7 +38,7 @@
         android:id="@+id/retrofitRX_get"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="retrofit GET" />
+        android:text="retrofitRX GET" />
 
 
 
@@ -46,9 +46,15 @@
         android:id="@+id/retrofitRX_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="retrofit POST" />
+        android:text="retrofitRX POST" />
 
 
+
+    <Button
+        android:id="@+id/retrofitUtils"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="retrofitUtils" />
 
     <TextView
         android:id="@+id/show_text"
