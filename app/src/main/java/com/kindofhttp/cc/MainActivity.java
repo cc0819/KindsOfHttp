@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.kindofhttp.cc.entity.MovieEntity;
+import com.kindofhttp.cc.entity.MovieEntityRX;
 import com.kindofhttp.cc.entity.WeekDayEntiy;
 import com.kindofhttp.cc.okhttputlis.OkHttpUtils;
 import com.kindofhttp.cc.okhttputlis.callback.StringCallback;
@@ -302,11 +303,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void retrofitRxUtilsGET() {
-        RetrofitUtil.getInstance().getUsers(0,10, new BaseSubscriber<MovieEntity>(this) {
+        RetrofitUtil.getInstance().getUsers(0,10, new BaseSubscriber<MovieEntityRX>(this) {
 
             @Override
-            protected void onSuccees(BaseEntity<MovieEntity> t) throws Exception {
-                Log.e("retrofit","请求成功了--"+t.data.getTitle());
+            protected void onSuccees(BaseEntity<MovieEntityRX> t) throws Exception {
+                Log.e("retrofit","请求成功了--"+t.toString());
+                Log.e("retrofit","请求成功了--"+t.getCode());
+                Log.e("retrofit","请求成功了--"+t.getData());
+                Log.e("retrofit","请求成功了--"+t.getData().getCount());
             }
 
             @Override

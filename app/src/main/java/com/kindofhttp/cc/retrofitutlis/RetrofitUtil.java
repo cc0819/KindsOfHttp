@@ -2,7 +2,7 @@ package com.kindofhttp.cc.retrofitutlis;
 
 import android.content.Context;
 
-import com.kindofhttp.cc.entity.MovieEntity;
+import com.kindofhttp.cc.entity.MovieEntityRX;
 import com.kindofhttp.cc.retrofitutlis.api.BaseApiService;
 import com.kindofhttp.cc.retrofitutlis.base.BaseSubscriber;
 
@@ -87,7 +87,7 @@ public class RetrofitUtil {
 
 
 
-    public void getUsers(int start, int count , BaseSubscriber<MovieEntity> subscriber){
+    public void getUsers(int start, int count , BaseSubscriber<MovieEntityRX> subscriber){
         mBaseApiService.getTopMovie(start,count)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
