@@ -56,9 +56,9 @@ public abstract class BaseSubscriber<T> extends Subscriber<BaseEntity<T>> {
         }
     }
 
-    @Override
+        @Override
     public void onNext(BaseEntity<T> tBaseEntity) {
-        Log.w("info", "onNext: "+"成功了"+tBaseEntity.getTitle());//这里可以打印错误信息
+        Log.w("info", "onNext: "+"成功了"+tBaseEntity.getData());//这里可以打印错误信息
         onRequestEnd();
 //        if (tBaseEntity.isSuccess()) {
             try {

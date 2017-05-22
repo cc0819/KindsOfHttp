@@ -303,10 +303,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void retrofitRxUtilsGET() {
         RetrofitUtil.getInstance().getUsers(0,10, new BaseSubscriber<MovieEntity>(this) {
+
             @Override
             protected void onSuccees(BaseEntity<MovieEntity> t) throws Exception {
-                Log.e("retrofit","请求成功了--"+t.getTitle());
-//                showText.setText();
+                Log.e("retrofit","请求成功了--"+t.data.getTitle());
             }
 
             @Override
