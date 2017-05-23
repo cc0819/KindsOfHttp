@@ -6,14 +6,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.kindofhttp.cc.entity.UserInfo;
 import com.kindofhttp.cc.entity.MovieEntity;
+import com.kindofhttp.cc.entity.UserInfo;
 import com.kindofhttp.cc.entity.WeekDayEntiy;
 import com.kindofhttp.cc.okhttputil.OkHttpUtils;
 import com.kindofhttp.cc.okhttputil.callback.StringCallback;
-import com.kindofhttp.cc.retrofitutlis.RetrofitUtil;
-import com.kindofhttp.cc.retrofitutlis.BaseEntity;
-import com.kindofhttp.cc.retrofitutlis.BaseSubscriber;
+import com.kindofhttp.cc.rerxutils.BaseApiService;
+import com.kindofhttp.cc.rerxutils.BaseSubscriber;
+import com.kindofhttp.cc.rerxutils.ExceptionHandle;
+import com.kindofhttp.cc.rerxutils.RetrofitClientUtils;
 import com.kindofhttp.cc.utils.CustomInterceptor;
 import com.kindofhttp.cc.utils.RequestInterceptor;
 
@@ -349,20 +350,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void testEmailPost() {
-//        UserInfo weekDayEntiy = new UserInfo();
-//        weekDayEntiy.setEmail("118314160@qq.com");
-        RetrofitUtil.getInstance().getEmail(new BaseSubscriber<UserInfo>(this,true) {
-            @Override
-            protected void onSuccees(BaseEntity<UserInfo> t) throws Exception {
-                Log.e("retrofit","请求成功了11--"+t.isSuccess());
-            }
+        RetrofitClientUtils.getInstance(this,BaseApiService.Base_URL_USERINFO)
+                .createBaseApi()
+                .getUserInfo(new BaseSubscriber<UserInfo>(this) {
 
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-                Log.e("retrofit","请求失败了111"+e.toString());
-            }
-        });
+                    @Override
+                    public void onFailure(ExceptionHandle.ResponeThrowable e) {
+                        Log.e("retrofit","请求失败了111"+e.toString());
+                    }
 
+                    @Override
+                    public void onSuccess(UserInfo userInfo) {
+                        Log.e("retrofit","请求成功了11--"+userInfo.getName());
+                        Log.e("retrofit","请求成功了11--"+userInfo.getOther().getInterest());
+                        showText.setText(userInfo.getOther().getInterest());
+                    }
+                });
 
 
 

@@ -28,10 +28,10 @@ import rx.Observable;
 public interface BaseApiService {
 
 
-//    public static final String Base_URL = "https://api.douban.com/v2/movie/";
+    public static final String Base_URL = "https://api.douban.com/v2/movie/";
 //    public static final String Base_URL = "http://api.smith-compass-service.avcdata.com/";
 
-    public static final String Base_URL = "http://106.15.40.67/";
+    public static final String Base_URL_USERINFO = "http://106.15.40.67/";
 
 
 
@@ -45,7 +45,7 @@ public interface BaseApiService {
 
 
     @POST("home/test/guanguan")
-    Observable<BaseResponseEntity<UserInfo>> getEmail();
+    Observable<BaseResponseEntity<UserInfo>> getUserInfo();
 
 
     /**

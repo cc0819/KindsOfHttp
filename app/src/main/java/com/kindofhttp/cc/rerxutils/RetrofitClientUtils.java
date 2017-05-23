@@ -44,7 +44,6 @@ public class RetrofitClientUtils {
     private File httpCacheDirectory;
 
 
-
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())
@@ -53,7 +52,7 @@ public class RetrofitClientUtils {
     private static OkHttpClient.Builder httpClient =
             new OkHttpClient.Builder()
                     .addNetworkInterceptor(
-                            new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
+                            new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                     .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
 
 
@@ -84,12 +83,11 @@ public class RetrofitClientUtils {
         return new RetrofitClientUtils(context, url, headers);
     }
 
-   private RetrofitClientUtils() {
+    private RetrofitClientUtils() {
 
-   }
+    }
 
     private RetrofitClientUtils(Context context) {
-
         this(context, baseUrl, null);
     }
 
@@ -104,7 +102,7 @@ public class RetrofitClientUtils {
             url = baseUrl;
         }
 
-        if ( httpCacheDirectory == null) {
+        if (httpCacheDirectory == null) {
             httpCacheDirectory = new File(mContext.getCacheDir(), "tamic_cache");
         }
 
@@ -137,7 +135,7 @@ public class RetrofitClientUtils {
 
     }
 
-   /**
+    /**
      * ApiBaseUrl
      *
      * @param newApiBaseUrl
@@ -150,7 +148,7 @@ public class RetrofitClientUtils {
     }
 
     /**
-     *addcookieJar
+     * addcookieJar
      */
     public static void addCookie() {
         okHttpClient.newBuilder().cookieJar(new NovateCookieManger(mContext)).build();
@@ -170,6 +168,7 @@ public class RetrofitClientUtils {
 
     /**
      * create BaseApi  defalte ApiManager
+     *
      * @return ApiManager
      */
     public RetrofitClientUtils createBaseApi() {
@@ -181,19 +180,28 @@ public class RetrofitClientUtils {
      * create you ApiService
      * Create an implementation of the API endpoints defined by the {@code service} interface.
      */
-    public  <T> T create(final Class<T> service) {
+    public <T> T create(final Class<T> service) {
         if (service == null) {
             throw new RuntimeException("Api service is null!");
         }
         return retrofit.create(service);
     }
 
-    public Subscription getData(Subscriber<UserInfo> subscriber, String ip) {
-        return apiService.getData(ip)
-               .compose(schedulersTransformer())
+
+    public Subscription getUserInfo(Subscriber<UserInfo> subscriber) {
+        return apiService.getUserInfo()
+                .compose(schedulersTransformer())
                 .compose(transformer())
                 .subscribe(subscriber);
     }
+
+    public Subscription getData(Subscriber<UserInfo> subscriber, String ip) {
+        return apiService.getData(ip)
+                .compose(schedulersTransformer())
+                .compose(transformer())
+                .subscribe(subscriber);
+    }
+
 
     public Subscription get(String url, Map parameters, Subscriber<UserInfo> subscriber) {
 
@@ -218,7 +226,7 @@ public class RetrofitClientUtils {
                 .subscribe(subscriber);
     }
 
-    public void upload(String url, RequestBody requestBody,Subscriber<ResponseBody> subscriber) {
+    public void upload(String url, RequestBody requestBody, Subscriber<ResponseBody> subscriber) {
         apiService.upLoadFile(url, requestBody)
                 .compose(schedulersTransformer())
                 .compose(transformer())
@@ -238,7 +246,7 @@ public class RetrofitClientUtils {
 
             @Override
             public Object call(Object observable) {
-                return ((Observable)  observable).subscribeOn(Schedulers.io())
+                return ((Observable) observable).subscribeOn(Schedulers.io())
                         .unsubscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
             }
@@ -274,7 +282,8 @@ public class RetrofitClientUtils {
     }
 
     private static class HttpResponseFunc<T> implements Func1<Throwable, Observable<T>> {
-        @Override public Observable<T> call(Throwable t) {
+        @Override
+        public Observable<T> call(Throwable t) {
             return Observable.error(ExceptionHandle.handleException(t));
         }
     }
@@ -282,7 +291,8 @@ public class RetrofitClientUtils {
     private class HandleFuc<T> implements Func1<BaseResponseEntity<T>, T> {
         @Override
         public T call(BaseResponseEntity<T> response) {
-            if (!response.isOk()) throw new RuntimeException(response.getCode() + "" + response.getMessage() != null ? response.getMessage(): "");
+            if (!response.isOk())
+                throw new RuntimeException(response.getCode() + "" + response.getMessage() != null ? response.getMessage() : "");
             return response.getData();
         }
     }
@@ -292,15 +302,15 @@ public class RetrofitClientUtils {
      * /**
      * execute your customer API
      * For example:
-     *  MyApiService service =
-     *      RetrofitClientUtils.getInstance(MainActivity.this).create(MyApiService.class);
-     *
-     *  RetrofitClientUtils.getInstance(MainActivity.this)
-     *      .execute(service.lgon("name", "password"), subscriber)
-     *     * @param subscriber
+     * MyApiService service =
+     * RetrofitClientUtils.getInstance(MainActivity.this).create(MyApiService.class);
+     * <p>
+     * RetrofitClientUtils.getInstance(MainActivity.this)
+     * .execute(service.lgon("name", "password"), subscriber)
+     * * @param subscriber
      */
 
-    public static <T> T execute(Observable<T> observable ,Subscriber<T> subscriber) {
+    public static <T> T execute(Observable<T> observable, Subscriber<T> subscriber) {
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -312,6 +322,7 @@ public class RetrofitClientUtils {
 
     /**
      * DownSubscriber
+     *
      * @param <ResponseBody>
      */
     class DownSubscriber<ResponseBody> extends Subscriber<ResponseBody> {
@@ -339,7 +350,7 @@ public class RetrofitClientUtils {
         @Override
         public void onError(Throwable e) {
             if (callBack != null) {
-                callBack.onError(e);
+                callBack.onFailure(e);
             }
         }
 

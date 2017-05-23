@@ -134,7 +134,7 @@ public class DownLoadManager {
                 return true;
             } catch (IOException e) {
                 if (callBack != null) {
-                    callBack.onError(e);
+                    callBack.onFailure(e);
                 }
                 return false;
             } finally {
@@ -148,7 +148,7 @@ public class DownLoadManager {
             }
         } catch (IOException e) {
             if (callBack != null) {
-                callBack.onError(e);
+                callBack.onFailure(e);
             }
             return false;
         }

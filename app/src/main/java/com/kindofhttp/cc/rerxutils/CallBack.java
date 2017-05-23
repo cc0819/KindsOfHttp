@@ -8,7 +8,7 @@ public abstract class CallBack {
 
     public void onCompleted(){}
 
-    abstract public void onError(Throwable e);
+    abstract public void onFailure(Throwable e);
 
     public void onProgress(long fileSizeDownloaded){}
 
