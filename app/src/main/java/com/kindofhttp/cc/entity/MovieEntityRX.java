@@ -1,14 +1,12 @@
 package com.kindofhttp.cc.entity;
 
-import com.kindofhttp.cc.retrofitutlis.base.BaseEntity;
-
 import java.util.List;
 
 /**
  * Created by cc on 17/5/20.
  */
 
-public class MovieEntityRX extends BaseEntity{
+public class MovieEntityRX{
 
 
     /**

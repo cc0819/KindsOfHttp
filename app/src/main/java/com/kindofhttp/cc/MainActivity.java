@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kindofhttp.cc.entity.MovieEntity;
 import com.kindofhttp.cc.entity.MovieEntityRX;
@@ -84,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
                 retrofitRxPostLoad();
                 break;
             case R.id.retrofitUtils:
-                retrofitRxUtilsGET();
+//                retrofitRxUtilsGET();
+                retrofitRxUtilsPOST();
                 break;
             default:
                 break;
@@ -92,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 
 
     private void okHttpGetLoad() {
@@ -303,23 +307,48 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void retrofitRxUtilsGET() {
-        RetrofitUtil.getInstance().getUsers(0,10, new BaseSubscriber<MovieEntityRX>(this) {
-
+        RetrofitUtil.getInstance().getTopMovie(0,10, new BaseSubscriber<BaseEntity<MovieEntityRX>>(this,true) {
             @Override
-            protected void onSuccees(BaseEntity<MovieEntityRX> t) throws Exception {
-                Log.e("retrofit","请求成功了--"+t.toString());
-                Log.e("retrofit","请求成功了--"+t.getCode());
-                Log.e("retrofit","请求成功了--"+t.getData());
-                Log.e("retrofit","请求成功了--"+t.getData().getCount());
+            public void onNext(BaseEntity<MovieEntityRX> movieEntityRXBaseEntity) {
+                Log.e("retrofit","请求成功了11--"+movieEntityRXBaseEntity.getCount());
+                MovieEntityRX movieEntityRX = movieEntityRXBaseEntity.getData();
+                Toast.makeText(MainActivity.this,"--MovieEntityRX-"+movieEntityRX,Toast.LENGTH_SHORT).show();
             }
+
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-                Log.e("retrofit","请求失败了"+e.toString());
+                Log.e("retrofit","请求失败了111"+e.toString());
             }
         });
 
     }
+
+
+
+    private void retrofitRxUtilsPOST() {
+        WeekDayEntiy weekDayEntiy = new WeekDayEntiy();
+        weekDayEntiy.setLastWeekCount(0);
+        RetrofitUtil.getInstance().getWeekDay(weekDayEntiy, new BaseSubscriber<WeekDayEntiy>(this,true) {
+            @Override
+            public void onNext(WeekDayEntiy weekDayEntiy) {
+                Log.e("retrofit","请求成功了11--"+weekDayEntiy.getMessage());
+                Log.e("retrofit","请求成功了11--"+weekDayEntiy.getReturnValue().get(0));
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                Log.e("retrofit","请求失败了111"+e.toString());
+            }
+        });
+
+
+
+
+
+    }
+
+
 
 
 

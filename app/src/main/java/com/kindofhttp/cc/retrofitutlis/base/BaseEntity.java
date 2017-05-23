@@ -1,18 +1,20 @@
 package com.kindofhttp.cc.retrofitutlis.base;
 
-import java.io.Serializable;
-
 /**
  * Created by cc on 17/5/22.
  * 获取json数据基类
  */
 
-public class BaseEntity<T> implements Serializable {
+public class BaseEntity<T>{
 
     private static int SUCCESS_CODE=200;//成功的code
     public int code;
     public String msg;
-    public T data;
+
+    private int count;
+    private int start;
+    private int total;
+    private T data;
 
     public boolean isSuccess(){
         return this.getCode() ==SUCCESS_CODE;
@@ -44,7 +46,27 @@ public class BaseEntity<T> implements Serializable {
     }
 
 
+    public int getCount() {
+        return count;
+    }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
 
+    public int getStart() {
+        return start;
+    }
 
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
 }

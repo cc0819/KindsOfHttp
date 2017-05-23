@@ -16,18 +16,24 @@ import rx.Subscriber;
  * Created by cc on 17/5/22.
  *
  */
-public abstract class BaseSubscriber<T> extends Subscriber<BaseEntity<T>> {
+public abstract class BaseSubscriber<T> extends Subscriber<T> {
 
     private Context mContext;
+    private boolean isShowProgress;
 
-    public BaseSubscriber(Context mContext) {
+    public BaseSubscriber(Context mContext,boolean isShowProgress) {
         this.mContext = mContext;
+        this.isShowProgress = isShowProgress;
     }
+
+
 
     @Override
     public void onStart() {
         super.onStart();
-        showProgressDialog();
+        if (isShowProgress){
+            showProgressDialog();
+        }
         Log.e("cc","----请求开始了---");
     }
 
@@ -35,6 +41,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<BaseEntity<T>> {
 
     @Override
     public void onCompleted() {
+        onRequestEnd();
         Log.e("cc","----请求结束了---");
     }
 
@@ -55,25 +62,29 @@ public abstract class BaseSubscriber<T> extends Subscriber<BaseEntity<T>> {
             e1.printStackTrace();
         }
     }
-
-        @Override
-    public void onNext(BaseEntity<T> tBaseEntity) {
-        Log.w("info", "onNext: "+"成功了"+tBaseEntity.getData());//这里可以打印错误信息
-        onRequestEnd();
-//        if (tBaseEntity.isSuccess()) {
-            try {
-                onSuccees(tBaseEntity);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-//        } else {
+//
+//    @Override
+//    public void onNext(T t) {
+//    }
+//
+//    @Override
+//    public void onNext(BaseEntity<T> tBaseEntity) {
+//        Log.w("info", "onNext: "+"成功了"+tBaseEntity.getData());//这里可以打印错误信息
+//        onRequestEnd();
+////        if (tBaseEntity.isSuccess()) {
 //            try {
-//                onCodeError(tBaseEntity);
+//                onSuccees(tBaseEntity);
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
-//        }
-    }
+////        } else {
+////            try {
+////                onCodeError(tBaseEntity);
+////            } catch (Exception e) {
+////                e.printStackTrace();
+////            }
+////        }
+//    }
 
 
 
@@ -84,7 +95,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<BaseEntity<T>> {
      * @param t
      * @throws Exception
      */
-    protected abstract void onSuccees(BaseEntity<T> t) throws Exception;
+//    protected abstract void onSuccees(BaseEntity<T> t) throws Exception;
 
     /**
      * 返回成功了,但是code错误

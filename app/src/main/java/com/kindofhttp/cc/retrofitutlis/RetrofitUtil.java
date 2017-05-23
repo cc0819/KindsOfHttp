@@ -3,8 +3,9 @@ package com.kindofhttp.cc.retrofitutlis;
 import android.content.Context;
 
 import com.kindofhttp.cc.entity.MovieEntityRX;
+import com.kindofhttp.cc.entity.WeekDayEntiy;
 import com.kindofhttp.cc.retrofitutlis.api.BaseApiService;
-import com.kindofhttp.cc.retrofitutlis.base.BaseSubscriber;
+import com.kindofhttp.cc.retrofitutlis.base.BaseEntity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
@@ -78,6 +80,10 @@ public class RetrofitUtil {
     }
 
 
+    public  void cancel(){
+    }
+
+
     private <T> void toSubscribe(Observable<T> observable, Subscriber<T> subscriber){
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -87,12 +93,72 @@ public class RetrofitUtil {
 
 
 
-    public void getUsers(int start, int count , BaseSubscriber<MovieEntityRX> subscriber){
+    public void getTopMovie(int start, int count , Subscriber<BaseEntity<MovieEntityRX>> subscriber){
         mBaseApiService.getTopMovie(start,count)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(schedulersTransformer())
+//                .compose(transformer())
                 .subscribe(subscriber);
+    }
+
+
+
+    public void getWeekDay(WeekDayEntiy weekDayEntiy, Subscriber<WeekDayEntiy> subscriber){
+        mBaseApiService.getWeekDay(weekDayEntiy)
+                .compose(schedulersTransformer())
+//                .compose(transformer())
+                .subscribe(subscriber);
+    }
+
+
+
+
+
+
+    Observable.Transformer schedulersTransformer() {
+        return new Observable.Transformer() {
+            @Override
+            public Object call(Object observable) {
+                return ((Observable)  observable)
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+            }
+
+           /* @Override
+            public Observable call(Observable observable) {
+                return observable.subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+            }*/
+        };
+    }
+
+    public <T> Observable.Transformer<BaseEntity<T>, T> transformer() {
+
+        return new Observable.Transformer() {
+
+            @Override
+            public Object call(Object observable) {
+                return ((Observable) observable).map(new HandleFuc<T>()).onErrorResumeNext(new HttpResponseFunc<T>());
+            }
+        };
+    }
+
+
+    private static class HttpResponseFunc<T> implements Func1<Throwable, Observable<T>> {
+        @Override public Observable<T> call(Throwable t) {
+            return Observable.error(ExceptionHandle.handleException(t));
+        }
+    }
+
+
+
+    private class HandleFuc<T> implements Func1<BaseEntity<T>, T> {
+        @Override
+        public T call(BaseEntity<T> response) {
+            if (!response.isSuccess()) throw new RuntimeException(response.getCode() + "" + response.getMsg() != null ? response.getMsg(): "");
+            return response.getData();
+        }
     }
 
 
