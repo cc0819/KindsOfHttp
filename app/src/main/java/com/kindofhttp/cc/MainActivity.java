@@ -5,18 +5,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.kindofhttp.cc.entity.Email;
+import com.kindofhttp.cc.entity.UserInfo;
 import com.kindofhttp.cc.entity.MovieEntity;
-import com.kindofhttp.cc.entity.MovieEntityRX;
 import com.kindofhttp.cc.entity.WeekDayEntiy;
-import com.kindofhttp.cc.okhttputlis.OkHttpUtils;
-import com.kindofhttp.cc.okhttputlis.callback.StringCallback;
+import com.kindofhttp.cc.okhttputil.OkHttpUtils;
+import com.kindofhttp.cc.okhttputil.callback.StringCallback;
 import com.kindofhttp.cc.retrofitutlis.RetrofitUtil;
-import com.kindofhttp.cc.retrofitutlis.base.BaseSubscriber;
-import com.kindofhttp.cc.utlis.CustomInterceptor;
-import com.kindofhttp.cc.utlis.RequestInterceptor;
+import com.kindofhttp.cc.retrofitutlis.BaseEntity;
+import com.kindofhttp.cc.retrofitutlis.BaseSubscriber;
+import com.kindofhttp.cc.utils.CustomInterceptor;
+import com.kindofhttp.cc.utils.RequestInterceptor;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -307,60 +306,55 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void retrofitRxUtilsGET() {
-        RetrofitUtil.getInstance().getTopMovie(0,10, new BaseSubscriber<MovieEntityRX>(this,true) {
-
-            @Override
-            protected void onSuccees(MovieEntityRX movieEntityRX) throws Exception {
-                Log.e("retrofit","请求成功了11--"+movieEntityRX.getCount());
-                Log.e("retrofit","请求成功了11--"+movieEntityRX.getTitle());
-                Log.e("retrofit","请求成功了11--"+movieEntityRX.toString());
-                Toast.makeText(MainActivity.this,"--MovieEntityRX-"+movieEntityRX,Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-                Log.e("retrofit","请求失败了111"+e.toString());
-                Log.e("retrofit","请求失败了111"+isNetWorkError);
-            }
-        });
+//        RetrofitUtil.getInstance().getTopMovie(0,10, new BaseSubscriber<MovieEntityRX>(this,true) {
+//
+//            @Override
+//            protected void onSuccees(MovieEntityRX movieEntityRX) throws Exception {
+//                Log.e("retrofit","请求成功了11--"+movieEntityRX.getCount());
+//                Log.e("retrofit","请求成功了11--"+movieEntityRX.getTitle());
+//                Log.e("retrofit","请求成功了11--"+movieEntityRX.toString());
+//                Toast.makeText(MainActivity.this,"--MovieEntityRX-"+movieEntityRX,Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+//                Log.e("retrofit","请求失败了111"+e.toString());
+//                Log.e("retrofit","请求失败了111"+isNetWorkError);
+//            }
+//        });
 
     }
 
 
 
     private void retrofitRxUtilsPOST() {
-        WeekDayEntiy weekDayEntiy = new WeekDayEntiy();
-        weekDayEntiy.setLastWeekCount(0);
-        RetrofitUtil.getInstance().getWeekDay(weekDayEntiy, new BaseSubscriber<WeekDayEntiy>(this,true) {
-
-            @Override
-            protected void onSuccees(WeekDayEntiy weekDayEntiy) throws Exception {
-                Log.e("retrofit","请求成功了11--"+weekDayEntiy.getMessage());
-                Log.e("retrofit","请求成功了11--"+weekDayEntiy.getReturnValue().get(0));
-            }
-
-            @Override
-            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
-                Log.e("retrofit","请求失败了111"+e.toString());
-            }
-        });
-
-
-
-
+//        WeekDayEntiy weekDayEntiy = new WeekDayEntiy();
+//        weekDayEntiy.setLastWeekCount(0);
+//        RetrofitUtil.getInstance().getWeekDay(weekDayEntiy, new BaseSubscriber<WeekDayEntiy>(this,true) {
+//
+//            @Override
+//            protected void onSuccees(WeekDayEntiy weekDayEntiy) throws Exception {
+//                Log.e("retrofit","请求成功了11--"+weekDayEntiy.getMessage());
+//                Log.e("retrofit","请求成功了11--"+weekDayEntiy.getReturnValue().get(0));
+//            }
+//
+//            @Override
+//            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+//                Log.e("retrofit","请求失败了111"+e.toString());
+//            }
+//        });
 
     }
 
 
 
     private void testEmailPost() {
-        Email weekDayEntiy = new Email();
-        weekDayEntiy.setEmail("1186669460@qq.com");
-        RetrofitUtil.getInstance().getEmail(weekDayEntiy, new BaseSubscriber<Email>(this,true) {
-
+//        UserInfo weekDayEntiy = new UserInfo();
+//        weekDayEntiy.setEmail("118314160@qq.com");
+        RetrofitUtil.getInstance().getEmail(new BaseSubscriber<UserInfo>(this,true) {
             @Override
-            protected void onSuccees(Email email) throws Exception {
-                Log.e("retrofit","请求成功了11--"+email.toString());
+            protected void onSuccees(BaseEntity<UserInfo> t) throws Exception {
+                Log.e("retrofit","请求成功了11--"+t.isSuccess());
             }
 
             @Override
