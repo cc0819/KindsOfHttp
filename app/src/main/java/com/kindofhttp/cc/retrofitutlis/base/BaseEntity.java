@@ -15,10 +15,17 @@ public class BaseEntity<T>{
     private int start;
     private int total;
     private T data;
+    /**
+     * success : true
+     * message :
+     * returnValue : success
+     * times :
+     */
 
-    public boolean isSuccess(){
-        return this.getCode() ==SUCCESS_CODE;
-    }
+    private boolean success;
+    private String message;
+    private T returnValue;
+    private String times;
 
 
     public int getCode() {
@@ -35,14 +42,6 @@ public class BaseEntity<T>{
 
     public void setMsg(String msg) {
         this.msg = msg;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
     }
 
 
@@ -68,5 +67,56 @@ public class BaseEntity<T>{
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public T getReturnValue() {
+        return returnValue;
+    }
+
+    public void setReturnValue(T returnValue) {
+        this.returnValue = returnValue;
+    }
+
+    public String getTimes() {
+        return times;
+    }
+
+    public void setTimes(String times) {
+        this.times = times;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "success=" + success +
+                ", message='" + message + '\'' +
+                ", returnValue=" + returnValue +
+                ", times='" + times + '\'' +
+                '}';
     }
 }

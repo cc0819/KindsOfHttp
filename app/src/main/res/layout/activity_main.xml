@@ -56,6 +56,14 @@
         android:layout_height="wrap_content"
         android:text="retrofitUtils" />
 
+
+
+    <Button
+        android:id="@+id/testemail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TESTEMAIL" />
+
     <TextView
         android:id="@+id/show_text"
         android:layout_width="match_parent"

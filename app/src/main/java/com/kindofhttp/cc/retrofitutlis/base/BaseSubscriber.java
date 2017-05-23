@@ -47,7 +47,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
 
     @Override
     public void onError(Throwable e) {
-        Log.w("info", "onError: "+e.toString() );//这里可以打印错误信息
+        Log.e("info", "BaseSubscriber-onError: "+e.toString() );//这里可以打印错误信息
         onRequestEnd();
         try {
             if (e instanceof ConnectException
@@ -62,10 +62,15 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
             e1.printStackTrace();
         }
     }
-//
-//    @Override
-//    public void onNext(T t) {
-//    }
+
+    @Override
+    public void onNext(T t) {
+        try {
+            onSuccees(t);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 //
 //    @Override
 //    public void onNext(BaseEntity<T> tBaseEntity) {
@@ -95,7 +100,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
      * @param t
      * @throws Exception
      */
-//    protected abstract void onSuccees(BaseEntity<T> t) throws Exception;
+    protected abstract void onSuccees(T t) throws Exception;
 
     /**
      * 返回成功了,但是code错误

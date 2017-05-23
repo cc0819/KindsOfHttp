@@ -7,13 +7,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kindofhttp.cc.entity.Email;
 import com.kindofhttp.cc.entity.MovieEntity;
 import com.kindofhttp.cc.entity.MovieEntityRX;
 import com.kindofhttp.cc.entity.WeekDayEntiy;
 import com.kindofhttp.cc.okhttputlis.OkHttpUtils;
 import com.kindofhttp.cc.okhttputlis.callback.StringCallback;
 import com.kindofhttp.cc.retrofitutlis.RetrofitUtil;
-import com.kindofhttp.cc.retrofitutlis.base.BaseEntity;
 import com.kindofhttp.cc.retrofitutlis.base.BaseSubscriber;
 import com.kindofhttp.cc.utlis.CustomInterceptor;
 import com.kindofhttp.cc.utlis.RequestInterceptor;
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.okhttp_get, R.id.okhttp_post, R.id.retrofit_get, R.id.retrofit_post,R.id.retrofitRX_get,R.id.retrofitRX_post,R.id.retrofitUtils})
+    @OnClick({R.id.okhttp_get, R.id.okhttp_post, R.id.retrofit_get, R.id.retrofit_post,R.id.retrofitRX_get,R.id.retrofitRX_post,R.id.retrofitUtils,R.id.testemail})
     public void onClickViews(View view) {
         switch (view.getId()) {
             case R.id.okhttp_get:
@@ -85,8 +85,11 @@ public class MainActivity extends AppCompatActivity {
                 retrofitRxPostLoad();
                 break;
             case R.id.retrofitUtils:
-//                retrofitRxUtilsGET();
-                retrofitRxUtilsPOST();
+                retrofitRxUtilsGET();
+//                retrofitRxUtilsPOST();
+                break;
+            case R.id.testemail:
+                testEmailPost();
                 break;
             default:
                 break;
@@ -94,9 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
-
 
     private void okHttpGetLoad() {
         String url = "http://www.json.cn/";
@@ -307,18 +307,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void retrofitRxUtilsGET() {
-        RetrofitUtil.getInstance().getTopMovie(0,10, new BaseSubscriber<BaseEntity<MovieEntityRX>>(this,true) {
+        RetrofitUtil.getInstance().getTopMovie(0,10, new BaseSubscriber<MovieEntityRX>(this,true) {
+
             @Override
-            public void onNext(BaseEntity<MovieEntityRX> movieEntityRXBaseEntity) {
-                Log.e("retrofit","请求成功了11--"+movieEntityRXBaseEntity.getCount());
-                MovieEntityRX movieEntityRX = movieEntityRXBaseEntity.getData();
+            protected void onSuccees(MovieEntityRX movieEntityRX) throws Exception {
+                Log.e("retrofit","请求成功了11--"+movieEntityRX.getCount());
+                Log.e("retrofit","请求成功了11--"+movieEntityRX.getTitle());
+                Log.e("retrofit","请求成功了11--"+movieEntityRX.toString());
                 Toast.makeText(MainActivity.this,"--MovieEntityRX-"+movieEntityRX,Toast.LENGTH_SHORT).show();
             }
-
 
             @Override
             protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
                 Log.e("retrofit","请求失败了111"+e.toString());
+                Log.e("retrofit","请求失败了111"+isNetWorkError);
             }
         });
 
@@ -330,8 +332,9 @@ public class MainActivity extends AppCompatActivity {
         WeekDayEntiy weekDayEntiy = new WeekDayEntiy();
         weekDayEntiy.setLastWeekCount(0);
         RetrofitUtil.getInstance().getWeekDay(weekDayEntiy, new BaseSubscriber<WeekDayEntiy>(this,true) {
+
             @Override
-            public void onNext(WeekDayEntiy weekDayEntiy) {
+            protected void onSuccees(WeekDayEntiy weekDayEntiy) throws Exception {
                 Log.e("retrofit","请求成功了11--"+weekDayEntiy.getMessage());
                 Log.e("retrofit","请求成功了11--"+weekDayEntiy.getReturnValue().get(0));
             }
@@ -347,6 +350,34 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+
+    private void testEmailPost() {
+        Email weekDayEntiy = new Email();
+        weekDayEntiy.setEmail("1186669460@qq.com");
+        RetrofitUtil.getInstance().getEmail(weekDayEntiy, new BaseSubscriber<Email>(this,true) {
+
+            @Override
+            protected void onSuccees(Email email) throws Exception {
+                Log.e("retrofit","请求成功了11--"+email.toString());
+            }
+
+            @Override
+            protected void onFailure(Throwable e, boolean isNetWorkError) throws Exception {
+                Log.e("retrofit","请求失败了111"+e.toString());
+            }
+        });
+
+
+
+
+
+
+    }
+
+
+
 
 
 

@@ -434,4 +434,16 @@ public class MovieEntityRX{
             }
         }
     }
+
+
+    @Override
+    public String toString() {
+        return "MovieEntityRX{" +
+                "count=" + count +
+                ", start=" + start +
+                ", total=" + total +
+                ", title='" + title + '\'' +
+                ", subjects=" + subjects +
+                '}';
+    }
 }

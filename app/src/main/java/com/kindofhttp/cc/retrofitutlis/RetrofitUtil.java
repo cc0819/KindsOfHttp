@@ -2,6 +2,7 @@ package com.kindofhttp.cc.retrofitutlis;
 
 import android.content.Context;
 
+import com.kindofhttp.cc.entity.Email;
 import com.kindofhttp.cc.entity.MovieEntityRX;
 import com.kindofhttp.cc.entity.WeekDayEntiy;
 import com.kindofhttp.cc.retrofitutlis.api.BaseApiService;
@@ -46,7 +47,7 @@ public class RetrofitUtil {
 //                    public okhttp3.Response intercept(Chain chain) throws IOException {
 //                        Request request = chain.request()
 //                                .newBuilder()
-////                        .addHeader("Content-Type","application/json")
+//                        .addHeader("Content-Type","application/json")
 //                                .build();
 //                        return chain.proceed(request);
 //                    }
@@ -75,14 +76,16 @@ public class RetrofitUtil {
     }
 
 
-    public  BaseApiService getAPiService(){
-        return  mBaseApiService;
+    /**
+     * create you ApiService
+     * Create an implementation of the API endpoints defined by the {@code service} interface.
+     */
+    public  <T> T create(final Class<T> service) {
+        if (service == null) {
+            throw new RuntimeException("Api service is null!");
+        }
+        return mRetrofit.create(service);
     }
-
-
-    public  void cancel(){
-    }
-
 
     private <T> void toSubscribe(Observable<T> observable, Subscriber<T> subscriber){
         observable.subscribeOn(Schedulers.io())
@@ -93,9 +96,10 @@ public class RetrofitUtil {
 
 
 
-    public void getTopMovie(int start, int count , Subscriber<BaseEntity<MovieEntityRX>> subscriber){
+    public void getTopMovie(int start, int count , Subscriber<MovieEntityRX> subscriber){
         mBaseApiService.getTopMovie(start,count)
-                .compose(schedulersTransformer())
+                .compose(RxHelper.<MovieEntityRX>handleResult())
+//                .compose(defaultSchedulers())
 //                .compose(transformer())
                 .subscribe(subscriber);
     }
@@ -109,6 +113,14 @@ public class RetrofitUtil {
                 .subscribe(subscriber);
     }
 
+
+
+    public void getEmail(Email email, Subscriber<Email> subscriber){
+        mBaseApiService.getEmail(email)
+                .compose(schedulersTransformer())
+//                .compose(transformer())
+                .subscribe(subscriber);
+    }
 
 
 
@@ -134,7 +146,6 @@ public class RetrofitUtil {
     }
 
     public <T> Observable.Transformer<BaseEntity<T>, T> transformer() {
-
         return new Observable.Transformer() {
 
             @Override
@@ -143,6 +154,24 @@ public class RetrofitUtil {
             }
         };
     }
+
+
+    public  <T> Observable.Transformer<T, T> defaultSchedulers() {
+        return new Observable.Transformer<T, T>() {
+            @Override
+            public Observable<T> call(Observable<T> observable) {
+                return observable
+                        .subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+            }
+        };
+    }
+
+
+
+
+
 
 
     private static class HttpResponseFunc<T> implements Func1<Throwable, Observable<T>> {
@@ -156,7 +185,7 @@ public class RetrofitUtil {
     private class HandleFuc<T> implements Func1<BaseEntity<T>, T> {
         @Override
         public T call(BaseEntity<T> response) {
-            if (!response.isSuccess()) throw new RuntimeException(response.getCode() + "" + response.getMsg() != null ? response.getMsg(): "");
+//            if (!response.isSuccess()) throw new RuntimeException(response.getCode() + "" + response.getMsg() != null ? response.getMsg(): "");
             return response.getData();
         }
     }
