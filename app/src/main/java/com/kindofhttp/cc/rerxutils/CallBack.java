@@ -1,7 +1,7 @@
 package com.kindofhttp.cc.rerxutils;
 
 /**
- * Created by Tamic on 2016-08-02.
+ * Created by cc on 2017-03-11.
  */
 public abstract class CallBack {
     public void onStart(){}

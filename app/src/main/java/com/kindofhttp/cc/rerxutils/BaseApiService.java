@@ -24,6 +24,7 @@ import rx.Observable;
 
 /**
  * 接口类
+ * Created by cc on 2017-03-11.
  */
 public interface BaseApiService {
 

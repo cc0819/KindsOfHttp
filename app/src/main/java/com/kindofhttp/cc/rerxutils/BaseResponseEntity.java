@@ -2,6 +2,7 @@ package com.kindofhttp.cc.rerxutils;
 
 
 /**
+ * Created by cc on 2017-02-11.
  * 网络返回基类 支持泛型
  */
 public class BaseResponseEntity<T> {

@@ -14,7 +14,7 @@ import okhttp3.Response;
 
 /**
  * caheInterceptor
- * Created by Tamic on 2016-08-09.
+ * Created by cc on 2017-03-11.
  */
 public class CaheInterceptor implements Interceptor {
 

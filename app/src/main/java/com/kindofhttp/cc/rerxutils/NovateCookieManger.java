@@ -9,8 +9,6 @@ import okhttp3.HttpUrl;
 
 /**
  * RetrofitClientUtils
- * Created by Tamic on 2016-06-15.
- * {@link # https://github.com/NeglectedByBoss/RetrofitClient}
  */
 
 public class NovateCookieManger implements CookieJar {

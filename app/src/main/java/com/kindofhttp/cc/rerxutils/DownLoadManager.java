@@ -14,7 +14,7 @@ import java.io.OutputStream;
 import okhttp3.ResponseBody;
 
 /**
- * Created by Tamic on 2016-07-11.
+ * Created by cc on 2017-03-11.
  */
 public class DownLoadManager {
 
