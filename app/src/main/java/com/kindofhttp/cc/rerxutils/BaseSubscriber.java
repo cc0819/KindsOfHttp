@@ -23,7 +23,6 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
     @Override
     public void onStart() {
         super.onStart();
-
         Toast.makeText(context, "http is start", Toast.LENGTH_SHORT).show();
 
         // todo some common as show loadding  and check netWork is NetworkAvailable
@@ -47,7 +46,7 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
     public void onError(Throwable e) {
         Log.e("Tamic", e.getMessage());
         // todo error somthing
-
+        Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         if(e instanceof ExceptionHandle.ResponeThrowable){
             onFailure((ExceptionHandle.ResponeThrowable)e);
         } else {
